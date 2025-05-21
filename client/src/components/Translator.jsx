@@ -7,7 +7,6 @@ import useWebcam from "./translator/useWebcam";
 import {
   processWebcamFrame,
   isVideoReady,
-  handleSignRecognition,
 } from "./translator/translatorService";
 
 const Translator = () => {
@@ -25,6 +24,7 @@ const Translator = () => {
   const signHoldTimeRef = useRef(0);
   const lastPredictionRef = useRef("");
   const lastSignTimeRef = useRef(0);
+  const lastAddedTimeRef = useRef(0);
 
   // Use our webcam hook
   const {
@@ -52,6 +52,7 @@ const Translator = () => {
       signHoldTimeRef.current = 0;
       lastPredictionRef.current = "";
       lastSignTimeRef.current = 0;
+      lastAddedTimeRef.current = 0;
 
       // Start processing frames
       requestRef.current = requestAnimationFrame(processFrame);
@@ -73,6 +74,7 @@ const Translator = () => {
     signHoldTimeRef.current = 0;
     lastPredictionRef.current = "";
     lastSignTimeRef.current = 0;
+    lastAddedTimeRef.current = 0;
   };
 
   // Process a single frame
@@ -105,52 +107,56 @@ const Translator = () => {
 
       // Process the frame
       const result = await processWebcamFrame(video, context, canvas);
+      const currentTime = Date.now();
 
-      // Update state with the prediction - ensure prediction is empty when no hand detected
-      if (!result.handDetected) {
-        setPrediction("");
-        setConfidence(0);
-      } else {
-        setPrediction(result.prediction);
-        setConfidence(result.confidence);
-      }
-
+      // Update state with the prediction
+      const currentPrediction = result.handDetected ? result.prediction : "";
+      setPrediction(currentPrediction);
+      setConfidence(result.handDetected ? result.confidence : 0);
       setHandDetected(result.handDetected);
       setProcessedImage(result.processedImage || "");
 
-      // Handle sign recognition logic
-      const recognitionResult = handleSignRecognition(
-        result.handDetected,
-        result.handDetected ? result.prediction : "", // Ensure empty prediction when no hand
-        lastPredictionRef.current,
-        signHoldTimeRef.current,
-        deltaTime,
-        TIME_TO_RECORD_SIGN,
-        TIME_FOR_NEW_SIGN,
-        currentWord,
-        lastSignTimeRef.current
-      );
+      // SIMPLIFIED SIGN RECOGNITION LOGIC
+      if (result.handDetected && currentPrediction) {
+        // If we're showing the same prediction as before, increase hold time
+        if (currentPrediction === lastPredictionRef.current) {
+          signHoldTimeRef.current += deltaTime;
+          setSignHoldTime(signHoldTimeRef.current);
 
-      // Update our refs and state based on the recognition result
-      signHoldTimeRef.current = recognitionResult.signHoldTime;
-      lastPredictionRef.current = recognitionResult.lastPrediction;
-      lastSignTimeRef.current = recognitionResult.lastSignTime;
+          // If we've held the sign long enough, add the letter to the word
+          if (signHoldTimeRef.current >= TIME_TO_RECORD_SIGN) {
+            setCurrentWord((prev) => prev + currentPrediction);
+            lastSignTimeRef.current = currentTime;
+            lastAddedTimeRef.current = currentTime;
 
-      // Update UI state
-      setSignHoldTime(recognitionResult.signHoldTime);
+            // After adding a letter, reset the hold time
+            signHoldTimeRef.current = 0;
+            setSignHoldTime(0);
+          }
+        } else {
+          // New prediction, reset the timer and update the last prediction
+          signHoldTimeRef.current = 0;
+          setSignHoldTime(0);
+          lastPredictionRef.current = currentPrediction;
+        }
+      } else {
+        // No hand detected, reset timer
+        signHoldTimeRef.current = 0;
+        setSignHoldTime(0);
+        lastPredictionRef.current = "";
 
-      // Add to current word if needed
-      if (recognitionResult.currentWord !== currentWord) {
-        setCurrentWord(recognitionResult.currentWord);
-      }
-
-      // Add to sentence if needed
-      if (recognitionResult.addToSentence) {
-        setSentence(
-          (prev) =>
-            prev + (prev && !prev.endsWith(" ") ? " " : "") + currentWord
-        );
-        setCurrentWord("");
+        // If no hand for a while and we have a word, add it to the sentence
+        if (
+          currentWord &&
+          currentWord.length > 0 &&
+          currentTime - lastSignTimeRef.current > TIME_FOR_NEW_SIGN
+        ) {
+          setSentence(
+            (prev) =>
+              prev + (prev && !prev.endsWith(" ") ? " " : "") + currentWord
+          );
+          setCurrentWord("");
+        }
       }
     } catch (error) {
       console.error("Error processing frame:", error);
@@ -227,7 +233,7 @@ const Translator = () => {
     <div className="min-h-screen bg-gray-100 pt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-        <h1 className="text-4xl font-extrabold text-blue-800 sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+          <h1 className="text-4xl font-extrabold text-blue-800 sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
             ASL Translator
           </h1>
           <p className="mt-2 text-lg text-gray-600">

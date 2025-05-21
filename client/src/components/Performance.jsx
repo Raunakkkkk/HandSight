@@ -69,7 +69,7 @@ const Performance = () => {
                 </h3>
                 <div className="flex justify-center">
                   <img
-                    src="../../public/images/confusion-matrix.png"
+                    src="images/confusion-matrix.png"
                     alt="Confusion Matrix (ASL A-Z)"
                     className="max-w-full h-auto"
                   />

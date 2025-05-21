@@ -65,7 +65,6 @@ const WebcamDisplay = ({
           {handDetected ? (
             <>
               <p>Current: {prediction || "None"}</p>
-              <p>Confidence: {Math.round(confidence * 100)}%</p>
               <p>
                 Hold time: {Math.round(signHoldTime / 1000)}/
                 {Math.round(TIME_TO_RECORD_SIGN / 1000)}s
