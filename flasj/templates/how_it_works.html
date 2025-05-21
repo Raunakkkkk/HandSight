@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How It Works - Sign Language Translator</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css"
+    />
+    <style>
+      .process-step {
+        position: relative;
+        padding-left: 60px;
+        margin-bottom: 30px;
+      }
+      .step-number {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 45px;
+        height: 45px;
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      }
+      .tech-section {
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+      }
+      .code-block {
+        border-radius: 10px;
+        margin: 20px 0;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      .diagram-img {
+        max-width: 100%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        transition: transform 0.3s;
+      }
+      .diagram-img:hover {
+        transform: scale(1.02);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('home') }}"
+          ><i class="fas fa-hands"></i> Sign Language Translator</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('home') }}">
+                <i class="fas fa-home"></i> Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('translator') }}"
+                ><i class="fas fa-language"></i> Translator</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ url_for('how_it_works') }}"
+                ><i class="fas fa-question-circle"></i> How It Works</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('team') }}">
+                <i class="fas fa-users"></i> Our Team</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="row mb-5">
+        <div class="col-lg-12 text-center">
+          <h1 class="display-4 fw-bold mb-4 word-reveal" id="techHeading">
+            The Technology Behind Sign Language Recognition
+          </h1>
+          <p class="lead mb-5">
+            Our sign language translator uses advanced machine learning and
+            computer vision techniques to recognize hand gestures and convert
+            them to text in real-time.
+          </p>
+        </div>
+      </div>
+
+      <div class="row mb-5">
+        <div class="col-lg-12">
+          <div class="card" style="--animation-order: 1">
+            <div class="card-header bg-primary text-white">
+              <h2 class="mb-0">
+                <i class="fas fa-sitemap"></i> The Recognition Process
+              </h2>
+            </div>
+            <div class="card-body">
+              <div class="process-step" style="--animation-order: 1">
+                <div class="step-number">1</div>
+                <h3>Data Preprocessing</h3>
+                <p>
+                  Our system uses a comprehensive preprocessing pipeline to
+                  prepare sign language images for training. We process the ASL
+                  alphabet dataset (A-Z) using MediaPipe for hand landmark
+                  detection and OpenCV for image processing.
+                </p>
+                <div class="row align-items-center">
+                  <div class="col-md-8">
+                    <pre class="code-block"><code class="language-python">
+# Initialize MediaPipe Hands
+mp_hands = mp.solutions.hands
+hands = mp_hands.Hands(static_image_mode=True, max_num_hands=1)
+
+def extract_keypoints(image):
+    result = hands.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+    if result.multi_hand_landmarks:
+        hand = result.multi_hand_landmarks[0]
+        return np.array([[lm.x, lm.y, lm.z] for lm in hand.landmark]).flatten()
+    return None
+
+# Process each image
+for label in VALID_LABELS:  # A-Z
+    for file in files:
+        img = cv2.imread(img_path)
+        kp = extract_keypoints(img)
+        if kp is not None:
+            resized = cv2.resize(img, (64, 64)) / 255.0
+            images.append(resized)
+            keypoints.append(kp)
+            labels.append(label)
+                    </code></pre>
+                  </div>
+                  <div class="col-md-4 text-center">
+                    <img
+                      src="{{ url_for('static', filename='images/hand_landmarks.png') }}"
+                      alt="Hand Landmarks"
+                      class="diagram-img"
+                    />
+                    <p class="text-muted mt-2">
+                      Hand landmarks extraction process
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="process-step" style="--animation-order: 2">
+                <div class="step-number">2</div>
+                <h3>Data Augmentation</h3>
+                <p>
+                  To improve model robustness, we implement data augmentation
+                  techniques including rotation, shifting, shearing, and
+                  flipping. This helps the model learn invariant features and
+                  perform better in real-world conditions.
+                </p>
+                <pre class="code-block"><code class="language-python">
+datagen = ImageDataGenerator(
+    rotation_range=10,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    shear_range=0.1,
+    zoom_range=0.1,
+    horizontal_flip=True
+)
+                    </code></pre>
+              </div>
+
+              <div class="process-step" style="--animation-order: 3">
+                <div class="step-number">3</div>
+                <h3>Hybrid Neural Network Architecture</h3>
+                <p>
+                  Our model uses a hybrid architecture that combines both image
+                  and keypoint data for improved accuracy. The network processes
+                  image features through convolutional layers while
+                  simultaneously analyzing hand landmark data through dense
+                  layers.
+                </p>
+                <div class="row align-items-center">
+                  <div class="col-md-8">
+                    <pre class="code-block"><code class="language-python">
+# Image processing branch
+input_img = Input(shape=(64, 64, 3))
+x = Conv2D(32, (3,3), activation='relu')(input_img)
+x = MaxPooling2D((2,2))(x)
+x = Conv2D(64, (3,3), activation='relu')(x)
+x = MaxPooling2D((2,2))(x)
+x = Flatten()(x)
+
+# Keypoint processing branch
+input_kp = Input(shape=(63,))
+y = Dense(128, activation='relu')(input_kp)
+
+# Combine branches
+combined = Concatenate()([x, y])
+z = Dense(256, activation='relu')(combined)
+z = Dropout(0.5)(z)
+z = Dense(26, activation='softmax')(z)
+
+model = Model(inputs=[input_img, input_kp], outputs=z)
+                    </code></pre>
+                  </div>
+                  <div class="col-md-4 text-center">
+                    <img
+                      src="{{ url_for('static', filename='images/neural_network.png') }}"
+                      alt="Neural Network Architecture"
+                      class="diagram-img"
+                    />
+                    <p class="text-muted mt-2">
+                      Hybrid neural network architecture
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="process-step" style="--animation-order: 4">
+                <div class="step-number">4</div>
+                <h3>Model Training</h3>
+                <p>
+                  The model is trained using a custom sequence generator that
+                  handles both image augmentation and keypoint data. We use
+                  categorical cross-entropy loss and Adam optimizer to train the
+                  network over multiple epochs.
+                </p>
+                <pre class="code-block"><code class="language-python">
+model.compile(optimizer='adam', 
+              loss='categorical_crossentropy', 
+              metrics=['accuracy'])
+
+train_gen = ASLAugmentedSequence(datagen, X_img_train, X_kp_train, y_train)
+history = model.fit(
+    train_gen,
+    validation_data=([X_img_test, X_kp_test], y_test),
+    epochs=8
+)
+                    </code></pre>
+              </div>
+
+              <div class="process-step" style="--animation-order: 5">
+                <div class="step-number">5</div>
+                <h3>Real-time Inference</h3>
+                <p>
+                  During inference, our system processes video frames in
+                  real-time, extracting both image features and hand landmarks.
+                  The hybrid model combines these features to make accurate
+                  predictions of sign language gestures.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-5">
+        <div class="col-lg-12">
+          <div class="card" style="--animation-order: 2">
+            <div class="card-header bg-success text-white">
+              <h2 class="mb-0">
+                <i class="fas fa-database"></i> Training the Model
+              </h2>
+            </div>
+            <div class="card-body">
+              <div class="tech-section">
+                <h3><i class="fas fa-images"></i> Dataset Preparation</h3>
+                <p>
+                  Our model was trained on the ASL alphabet dataset, containing
+                  thousands of images for each letter (A-Z). We process each
+                  image to extract both hand landmarks and image features,
+                  creating a rich dataset for training our hybrid model.
+                </p>
+                <pre class="code-block"><code class="language-python">
+# Load preprocessed data
+images = np.load("processed_asl/images.npy")
+keypoints = np.load("processed_asl/keypoints.npy")
+labels = np.load("processed_asl/labels.npy")
+
+# One-hot encode labels
+lb = LabelBinarizer()
+labels_encoded = lb.fit_transform(labels)
+
+# Train-test split
+X_img_train, X_img_test, X_kp_train, X_kp_test, y_train, y_test = train_test_split(
+    images, keypoints, labels_encoded, test_size=0.1, random_state=42
+)
+                    </code></pre>
+              </div>
+
+              <div class="tech-section">
+                <h3><i class="fas fa-brain"></i> Model Training</h3>
+                <p>
+                  We use a custom sequence generator to handle both image
+                  augmentation and keypoint data during training. The model
+                  combines convolutional layers for image processing with dense
+                  layers for landmark analysis, creating a robust hybrid
+                  architecture.
+                </p>
+                <pre class="code-block"><code class="language-python">
+# Custom sequence generator for training
+class ASLAugmentedSequence(Sequence):
+    def __init__(self, datagen, X_img, X_kp, y, batch_size=64):
+        self.X_img = X_img
+        self.X_kp = X_kp
+        self.y = y
+        self.batch_size = batch_size
+        self.datagen = datagen
+        self.indices = np.arange(len(X_img))
+
+    def __len__(self):
+        return int(np.ceil(len(self.X_img) / self.batch_size))
+
+    def __getitem__(self, idx):
+        batch_indices = self.indices[idx * self.batch_size:(idx + 1) * self.batch_size]
+        batch_img = self.X_img[batch_indices]
+        batch_kp = self.X_kp[batch_indices]
+        batch_y = self.y[batch_indices]
+
+        augmented_img = next(self.datagen.flow(batch_img, batch_size=self.batch_size, shuffle=False))
+        return (augmented_img, batch_kp), batch_y
+
+    def on_epoch_end(self):
+        np.random.shuffle(self.indices)
+
+# Train the model
+train_gen = ASLAugmentedSequence(datagen, X_img_train, X_kp_train, y_train)
+history = model.fit(
+    train_gen,
+    validation_data=([X_img_test, X_kp_test], y_test),
+    epochs=8
+)
+                    </code></pre>
+              </div>
+
+              <div class="tech-section">
+                <h3><i class="fas fa-chart-line"></i> Performance Metrics</h3>
+                <p>
+                  Our hybrid model achieves high accuracy by leveraging both
+                  image features and hand landmarks. The combination of
+                  convolutional and dense layers allows for robust recognition
+                  across different signing styles and conditions.
+                </p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <h4>Training Features</h4>
+                        <ul class="list-unstyled">
+                          <li>Image Size: 64x64 pixels</li>
+                          <li>Landmark Points: 21 per hand</li>
+                          <li>Training Epochs: 8</li>
+                          <li>Batch Size: 64</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <h4>Model Architecture</h4>
+                        <ul class="list-unstyled">
+                          <li>Convolutional Layers: 2</li>
+                          <li>Dense Layers: 3</li>
+                          <li>Dropout Rate: 0.5</li>
+                          <li>Output Classes: 26 (A-Z)</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Results Section -->
+                <div class="mt-4">
+                  <h3><i class="fas fa-poll"></i> Results</h3>
+                  <div class="row align-items-center">
+                    <div class="col-lg-7">
+                      <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">
+                          <strong>Accuracy:</strong> 98.78%
+                        </li>
+                        <li class="list-group-item">
+                          <strong>Precision:</strong> 98.62%
+                        </li>
+                        <li class="list-group-item">
+                          <strong>Recall:</strong> 98.54%
+                        </li>
+                        <li class="list-group-item">
+                          <strong>F1 Score:</strong> 98.53%
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="col-lg-5 text-center">
+                      <img
+                        src="{{ url_for('static', filename='images/confusion_matrix.jpg') }}"
+                        alt="Confusion Matrix"
+                        class="img-fluid rounded shadow"
+                        style="max-height: 350px"
+                      />
+                      <p class="text-muted mt-2">Confusion Matrix (ASL A-Z)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-5">
+        <div class="col-lg-12">
+          <div class="card" style="--animation-order: 3">
+            <div class="card-header bg-info text-white">
+              <h2 class="mb-0">
+                <i class="fas fa-cogs"></i> Implementation Challenges
+              </h2>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h4><i class="fas fa-adjust"></i> Lighting Conditions</h4>
+                      <p>
+                        Hand detection accuracy varies with lighting. We
+                        implemented preprocessing techniques to normalize
+                        brightness and contrast across different environments.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h4>
+                        <i class="fas fa-user-friends"></i> User Variations
+                      </h4>
+                      <p>
+                        Different people sign letters with slight variations.
+                        Our model was trained on diverse hand shapes and signing
+                        styles to accommodate these differences.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h4>
+                        <i class="fas fa-tachometer-alt"></i> Performance
+                        Optimization
+                      </h4>
+                      <p>
+                        Real-time processing requires speed and efficiency. We
+                        optimized our pipeline to maintain low latency while
+                        preserving recognition accuracy.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h4>
+                        <i class="fas fa-arrows-alt"></i> Hand Positioning
+                      </h4>
+                      <p>
+                        Sign recognition must work regardless of where the hand
+                        appears in the frame. Our normalization technique
+                        ensures position-invariant detection.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mb-5">
+        <a href="{{ url_for('translator') }}" class="btn btn-primary btn-lg">
+          Try the Translator <i class="fas fa-external-link-alt ms-2"></i>
+        </a>
+      </div>
+    </div>
+
+    <footer class="bg-dark text-white py-3 mt-4">
+      <div class="container text-center">
+        <p>Sign Language Translator &copy; 2025</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script>
+      // Removed the word animation script as it's no longer needed
+      // Keeping the Prism initialization
+      Prism.highlightAll();
+    </script>
+  </body>
+</html>

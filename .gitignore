@@ -1,0 +1,43 @@
+# Node.js
+node_modules/
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist/
+build/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.egg-info/
+.venv/
+venv/
+ENV/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# React
+client/build/
+client/dist/
+client/node_modules/
+
+# VSCode
+.vscode/
+
+# Misc
+*.swp
+*.swo
+.idea/ 

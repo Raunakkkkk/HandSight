@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meet the Team - Sign Language Translator</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <style>
+      .team-hero {
+        background-color: #f8f9fa;
+        padding: 4rem 0;
+        border-radius: 15px;
+        margin-bottom: 3rem;
+      }
+
+      .team-member-card {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+        border: none;
+      }
+
+      .team-member-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .member-image {
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #e9ecef;
+      }
+
+      .member-image i {
+        font-size: 8rem;
+        color: #0d6efd;
+      }
+
+      .member-info {
+        padding: 1.5rem;
+      }
+
+      .member-name {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .member-title {
+        color: #6c757d;
+        margin-bottom: 1rem;
+      }
+
+      .member-bio {
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      .social-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        margin-right: 10px;
+        color: white;
+        transition: transform 0.2s;
+      }
+
+      .social-links a:hover {
+        transform: scale(1.1);
+      }
+
+      .bg-github {
+        background-color: #24292e;
+      }
+
+      .bg-linkedin {
+        background-color: #0077b5;
+      }
+
+      .bg-email {
+        background-color: #ea4335;
+      }
+
+      .team-subtitle {
+        font-size: 1.2rem;
+        color: #6c757d;
+        margin-bottom: 2rem;
+      }
+
+      .word-reveal .word {
+        margin-right: 0.1em;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('home') }}"
+          ><i class="fas fa-hands"></i> Sign Language Translator</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('home') }}">
+                <i class="fas fa-home"></i> Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('translator') }}"
+                ><i class="fas fa-language"></i> Translator</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('how_it_works') }}"
+                ><i class="fas fa-question-circle"></i> How It Works</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ url_for('team') }}">
+                <i class="fas fa-users"></i> Our Team</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="team-hero text-center">
+        <h1 class="display-4 fw-bold mb-4 word-reveal" id="teamHeading">
+          Meet Our Team
+        </h1>
+        <p class="lead team-subtitle">
+          The talented pre-final year students from IIIT Kota who developed this
+          sign language translator
+        </p>
+      </div>
+
+      <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+          <div class="card team-member-card">
+            <div class="member-image">
+              <img
+                src="{{ url_for('static', filename='images/pp/rk.jpg') }}"
+                alt="Raunak Agarwal"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+            </div>
+            <div class="member-info">
+              <h3 class="member-name">Raunak Agarwal</h3>
+              <p class="member-title">Prefinal Year Student, IIIT Kota</p>
+              <p class="member-bio">
+                Specializing in machine learning and Full Stack Development.
+                Responsible for implementing the neural network architecture and
+                training the model for sign language recognition.
+              </p>
+              <div class="social-links">
+                <a href="#" class="bg-github"><i class="fab fa-github"></i></a>
+                <a href="#" class="bg-linkedin"
+                  ><i class="fab fa-linkedin-in"></i
+                ></a>
+                <a href="#" class="bg-email"><i class="fas fa-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card team-member-card">
+            <div class="member-image">
+              <img
+                src="{{ url_for('static', filename='images/pp/ad .jpg') }}"
+                alt="Aditya Gangwar"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+            </div>
+            <div class="member-info">
+              <h3 class="member-name">Aditya Gangwar</h3>
+              <p class="member-title">Prefinal Year Student, IIIT Kota</p>
+              <p class="member-bio">
+                Frontend developer with expertise in web applications. Led the
+                design and implementation of the user interface and real-time
+                video processing components.
+              </p>
+              <div class="social-links">
+                <a href="#" class="bg-github"><i class="fab fa-github"></i></a>
+                <a href="#" class="bg-linkedin"
+                  ><i class="fab fa-linkedin-in"></i
+                ></a>
+                <a href="#" class="bg-email"><i class="fas fa-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card team-member-card">
+            <div class="member-image">
+              <img
+                src="{{ url_for('static', filename='images/pp/dp.jpg') }}"
+                alt="Deepak Gangwar"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+            </div>
+            <div class="member-info">
+              <h3 class="member-name">Deepak Gangwar</h3>
+              <p class="member-title">Prefinal Year Student, IIIT Kota</p>
+              <p class="member-bio">
+                Backend developer and data science enthusiast. Developed the
+                Flask backend, implemented the API for real-time hand landmark
+                detection and processing.
+              </p>
+              <div class="social-links">
+                <a href="#" class="bg-github"><i class="fab fa-github"></i></a>
+                <a href="#" class="bg-linkedin"
+                  ><i class="fab fa-linkedin-in"></i
+                ></a>
+                <a href="#" class="bg-email"><i class="fas fa-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-5">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header bg-primary text-white">
+              <h2 class="mb-0">Project Overview</h2>
+            </div>
+            <div class="card-body">
+              <p class="lead">
+                This Sign Language Translator was developed as a final-year
+                project at IIIT Kota, showcasing the application of machine
+                learning and computer vision in assistive technology.
+              </p>
+
+              <h4 class="mt-4">Our Mission</h4>
+              <p>
+                We aim to break communication barriers by building a tool that
+                translates sign language to text in real-time, making it easier
+                for the deaf and hard of hearing community to communicate with
+                others.
+              </p>
+
+              <h4 class="mt-4">Technologies Used</h4>
+              <div class="row mt-3">
+                <div class="col-md-3 col-6 mb-3 text-center">
+                  <div class="p-3 bg-light rounded">
+                    <i class="fab fa-python fa-2x mb-2 text-primary"></i>
+                    <p class="mb-0">Python</p>
+                  </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3 text-center">
+                  <div class="p-3 bg-light rounded">
+                    <i class="fas fa-brain fa-2x mb-2 text-primary"></i>
+                    <p class="mb-0">TensorFlow</p>
+                  </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3 text-center">
+                  <div class="p-3 bg-light rounded">
+                    <i class="fas fa-flask fa-2x mb-2 text-primary"></i>
+                    <p class="mb-0">Flask</p>
+                  </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3 text-center">
+                  <div class="p-3 bg-light rounded">
+                    <i class="fab fa-js fa-2x mb-2 text-primary"></i>
+                    <p class="mb-0">JavaScript</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-dark text-white py-3 mt-4">
+      <div class="container text-center">
+        <p>Sign Language Translator &copy; 2025</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
