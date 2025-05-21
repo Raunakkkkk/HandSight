@@ -224,10 +224,10 @@ const Translator = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10">
+    <div className="min-h-screen bg-gray-100 pt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-gray-900">
+        <h1 className="text-4xl font-extrabold text-blue-800 sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
             ASL Translator
           </h1>
           <p className="mt-2 text-lg text-gray-600">

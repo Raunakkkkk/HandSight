@@ -1,9 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+
+  // Add scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -14,54 +31,72 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md">
+    <nav
+      className={`fixed w-full z-10 transition-all duration-300 ${
+        scrolled ? "bg-white shadow-md py-2" : "bg-transparent py-4"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <Link to="/" className="text-xl font-bold text-blue-600">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center">
+              <span className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
                 HandSight
-              </Link>
-            </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link
-                to="/"
-                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                  isActive("/")
-                    ? "border-blue-500 text-gray-900"
-                    : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                }`}
-              >
-                Home
-              </Link>
-              <Link
-                to="/translator"
-                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                  isActive("/translator")
-                    ? "border-blue-500 text-gray-900"
-                    : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                }`}
-              >
-                Translator
-              </Link>
-              <Link
-                to="/how-it-works"
-                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                  isActive("/how-it-works")
-                    ? "border-blue-500 text-gray-900"
-                    : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                }`}
-              >
-                How It Works
-              </Link>
-            </div>
+              </span>
+            </Link>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex md:items-center md:space-x-8">
+            <Link
+              to="/"
+              className={`text-sm font-medium transition-all duration-200 ${
+                isActive("/")
+                  ? "text-blue-600"
+                  : "text-gray-600 hover:text-blue-600"
+              }`}
+            >
+              Home
+            </Link>
+            <Link
+              to="/how-it-works"
+              className={`text-sm font-medium transition-all duration-200 ${
+                isActive("/how-it-works")
+                  ? "text-blue-600"
+                  : "text-gray-600 hover:text-blue-600"
+              }`}
+            >
+              How It Works
+            </Link>
+            <Link
+              to="/performance"
+              className={`text-sm font-medium transition-all duration-200 ${
+                isActive("/performance")
+                  ? "text-blue-600"
+                  : "text-gray-600 hover:text-blue-600"
+              }`}
+            >
+              Results
+            </Link>
+            <Link
+              to="/translator"
+              className="ml-4 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-md shadow-sm hover:shadow-md transition-all duration-200 transform hover:scale-105"
+            >
+              Try Now
+            </Link>
           </div>
 
           {/* Mobile menu button */}
-          <div className="flex items-center sm:hidden">
+          <div className="flex items-center md:hidden">
+            <Link
+              to="/translator"
+              className="mr-4 px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-md shadow-sm"
+            >
+              Try Now
+            </Link>
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-blue-600 hover:bg-gray-100 focus:outline-none"
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
@@ -105,40 +140,40 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="sm:hidden">
-          <div className="pt-2 pb-3 space-y-1">
+        <div className="md:hidden absolute w-full bg-white shadow-lg rounded-b-lg">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link
               to="/"
-              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+              className={`block px-3 py-2 rounded-md text-base font-medium ${
                 isActive("/")
-                  ? "bg-blue-50 border-blue-500 text-blue-700"
-                  : "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-blue-600"
               }`}
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link
-              to="/translator"
-              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                isActive("/translator")
-                  ? "bg-blue-50 border-blue-500 text-blue-700"
-                  : "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Translator
-            </Link>
-            <Link
               to="/how-it-works"
-              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+              className={`block px-3 py-2 rounded-md text-base font-medium ${
                 isActive("/how-it-works")
-                  ? "bg-blue-50 border-blue-500 text-blue-700"
-                  : "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-blue-600"
               }`}
               onClick={() => setIsMenuOpen(false)}
             >
               How It Works
+            </Link>
+            <Link
+              to="/performance"
+              className={`block px-3 py-2 rounded-md text-base font-medium ${
+                isActive("/performance")
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-blue-600"
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Results
             </Link>
           </div>
         </div>

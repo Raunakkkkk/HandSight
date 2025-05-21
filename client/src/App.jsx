@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Translator from "./components/Translator";
 import HowItWorks from "./components/HowItWorks";
+import Performance from "./components/Performance";
 
 function App() {
   return (
@@ -18,11 +19,12 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/translator" element={<Translator />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/performance" element={<Performance />} />
           </Routes>
         </main>
         <footer className="bg-gray-800 text-white py-4">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p>© {new Date().getFullYear()} HandSight. All rights reserved.</p>
+            <p>Made with ❤️‍🔥 by Raunak Agarwal</p>
           </div>
         </footer>
       </div>

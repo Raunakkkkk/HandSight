@@ -19,7 +19,7 @@ import {
 
 const HowItWorks = () => {
   return (
-    <div className="min-h-screen bg-white py-14">
+    <div className="min-h-screen bg-white  pt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <h1 className="text-4xl font-extrabold text-blue-900 sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
@@ -44,40 +44,43 @@ const HowItWorks = () => {
               </p>
             </div>
             {/* Hand Detection */}
-            <div className="mb-12 flex flex-col md:flex-row items-center gap-8">
-              <div className="md:w-1/2 flex flex-col items-center md:items-start">
-                <h3 className="text-2xl font-semibold text-blue-800 mb-6 flex items-center">
-                  <span className="text-3xl mr-3">👋</span>
-                  1. Hand Detection
-                </h3>
-                <p className="text-lg text-gray-600 mb-4 text-center md:text-left">
-                  Using MediaPipe's hand tracking library, we detect and track
-                  the position of hands in each video frame. The system creates
-                  a detailed map of 21 landmarks representing the key points in
-                  a human hand.
-                </p>
-                <p className="text-lg text-gray-600 text-center md:text-left">
-                  These landmarks provide precise positioning of the fingers,
-                  joints, and palm, allowing our system to accurately interpret
-                  hand shapes for ASL recognition.
-                </p>
-              </div>
-              <div className="md:w-1/2 flex flex-col items-center justify-center">
-                <img
-                  src="/images/hand_landmarks.png"
-                  alt="Hand landmarks detection showing 21 key points"
-                  className="w-full max-w-xs h-auto object-cover mx-auto"
-                />
+            <div className="mb-12 flex flex-col items-center">
+              <h3 className="text-2xl font-semibold text-blue-800 mb-6 flex items-center">
+                <span className="text-3xl mr-3">👋</span>
+                1. Hand Detection
+              </h3>
+              <p className="text-lg text-gray-600 mb-4 text-center">
+                Using MediaPipe's hand tracking library, we detect and track the
+                position of hands in each video frame. The system creates a
+                detailed map of 21 landmarks representing the key points in a
+                human hand.
+              </p>
+              <p className="text-lg text-gray-600 text-center">
+                These landmarks provide precise positioning of the fingers,
+                joints, and palm, allowing our system to accurately interpret
+                hand shapes for ASL recognition.
+              </p>
+              <div className="w-full flex justify-center mt-6">
+                <div className="rounded-lg overflow-hidden shadow-lg max-w-md w-full">
+                  <img
+                    src="/images/hand_landmarks.png"
+                    alt="Hand landmarks detection showing 21 key points"
+                    className="w-full h-auto object-cover"
+                  />
+                  <div className="bg-blue-50 p-3 text-center text-gray-600">
+                    21 landmarks tracked on the hand for ASL recognition
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Feature Extraction */}
-            <div className="mb-12 flex flex-col items-center md:items-start">
-              <h3 className="text-2xl font-semibold text-blue-800 mb-6 flex items-center md:w-full md:text-left">
+            <div className="mb-12 flex flex-col items-center">
+              <h3 className="text-2xl font-semibold text-blue-800 mb-6 flex items-center">
                 <span className="text-3xl mr-3">🔍</span>
                 2. Feature Extraction
               </h3>
-              <p className="text-lg text-gray-600 text-center md:text-left md:w-full">
+              <p className="text-lg text-gray-600 text-center">
                 Once hand landmarks are detected, we extract the 3D coordinates
                 (x, y, z) of each landmark point. These coordinates are used as
                 features for our machine learning model. For training, we
@@ -87,12 +90,12 @@ const HowItWorks = () => {
             </div>
 
             {/* Machine Learning Classification */}
-            <div className="mb-12 flex flex-col items-center md:items-start">
-              <h3 className="text-2xl font-semibold text-blue-800 mb-6 flex items-center md:w-full md:text-left">
+            <div className="mb-12 flex flex-col items-center">
+              <h3 className="text-2xl font-semibold text-blue-800 mb-6 flex items-center">
                 <span className="text-3xl mr-3">🧠</span>
                 3. Machine Learning Classification
               </h3>
-              <p className="text-lg text-gray-600 text-center md:text-left md:w-full">
+              <p className="text-lg text-gray-600 text-center">
                 The hand landmark data is fed into a neural network model
                 trained on the ASL alphabet dataset. The model consists of fully
                 connected layers with dropout for regularization and was trained
@@ -102,12 +105,12 @@ const HowItWorks = () => {
             </div>
 
             {/* Temporal Filtering */}
-            <div className="flex flex-col items-center md:items-start">
-              <h3 className="text-2xl font-semibold text-blue-800 mb-6 flex items-center md:w-full md:text-left">
+            <div className="flex flex-col items-center">
+              <h3 className="text-2xl font-semibold text-blue-800 mb-6 flex items-center">
                 <span className="text-3xl mr-3">⏱️</span>
                 4. Temporal Filtering
               </h3>
-              <p className="text-lg text-gray-600 text-center md:text-left md:w-full">
+              <p className="text-lg text-gray-600 text-center">
                 To prevent accidental inputs, our system requires a consistent
                 sign to be held for multiple frames before adding it to the
                 sentence. This helps filter out transitional movements between

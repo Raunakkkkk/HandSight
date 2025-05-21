@@ -1,87 +1,70 @@
-# ASL Recognition Web App
+# ASL Recognition Project
 
-This project uses a Python model for ASL (American Sign Language) recognition with a React frontend.
+This project is a web application for American Sign Language (ASL) recognition using a pre-trained machine learning model. The application captures video from a webcam, processes it to detect hand signs, and displays the recognized letters in real-time.
 
 ## Project Structure
 
-- `server/`: Express.js backend that runs the Python model
-- `client/`: React Vite frontend with Tailwind CSS
-- `testing model.py`: Python script for ASL recognition
-- `model.pkl`: Trained machine learning model for ASL recognition
+- **Backend**: Flask server (`app.py`) that runs the Python model for ASL recognition.
+- **Frontend**: React application built with Vite and styled with Tailwind CSS.
+- **Model**: Pre-trained model file (`model.pkl`) used for ASL recognition.
 
-## Setup
+## Setup Instructions
 
-### Python Environment Setup
+### Prerequisites
 
-1. Create a virtual environment:
+- Python 3.8 or higher
+- Node.js and npm
 
-   ```
+### Backend Setup
+
+1. Create a virtual environment and activate it:
+
+   ```bash
    python -m venv venv
+   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
    ```
 
-2. Activate the virtual environment:
+2. Install the required Python packages:
 
-   - On Windows:
-     ```
-     .\venv\Scripts\Activate.ps1
-     ```
-   - On macOS/Linux:
-     ```
-     source venv/bin/activate
-     ```
-
-3. Install Python dependencies:
-   ```
+   ```bash
    pip install -r requirements.txt
    ```
 
-### Server Setup
-
-1. Navigate to the server directory:
-
-   ```
-   cd server
+3. Run the Flask server:
+   ```bash
+   python app.py
    ```
 
-2. Install server dependencies:
-
-   ```
-   npm install
-   ```
-
-3. Start the server:
-   ```
-   npm run dev
-   ```
-
-### Client Setup
+### Frontend Setup
 
 1. Navigate to the client directory:
 
-   ```
+   ```bash
    cd client
    ```
 
-2. Install client dependencies:
+2. Install the required npm packages:
 
-   ```
+   ```bash
    npm install
    ```
 
-3. Start the React development server:
-   ```
+3. Start the development server:
+   ```bash
    npm run dev
    ```
 
 ## Usage
 
-1. Open your browser and navigate to `http://localhost:5173`
-2. Click the "Start ASL Recognition" button
-3. A separate window will open with your webcam feed
-4. Position your hand in the frame to see ASL recognition in action
+- Open your web browser and go to `http://localhost:5173` to access the application.
+- Allow the application to access your webcam.
+- Hold your hand in front of the camera to see the recognized ASL letters.
 
-### Controls in the Recognition Window:
+## Additional Information
 
-- Press 'q' to quit
-- Press 'space' to add a space to the sentence
-- Press 'backspace' to delete the last character
+- The application uses a time-based sign recognition system, requiring you to hold a sign for 3 seconds to register a letter.
+- The frontend is modular, with components for the webcam display, text output, and instructions.
+
+## License
+
+This project is licensed under the MIT License.
