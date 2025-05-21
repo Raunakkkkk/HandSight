@@ -30,8 +30,6 @@ ENV/
 Thumbs.db
 
 # React
-client/build/
-client/dist/
 client/node_modules/
 
 # VSCode
